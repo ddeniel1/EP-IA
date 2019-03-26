@@ -1,0 +1,96 @@
+package Setup;
+
+import java.util.Random;
+
+public class Population {
+	private double indiceMutacao = 0;
+	private int tamanho;
+	private Cromossomo[] dna;
+	private int target = 0;
+	public int geracao = 0;
+	private Random gerador = new Random();
+
+	public Population(int tam) {
+		this.tamanho = tam;
+		dna = new Cromossomo[this.tamanho];
+		initDNA();
+	}
+
+	public Population(Cromossomo[] newGen) {
+		this.tamanho = newGen.length;
+		dna = newGen;
+	}
+
+	private void initDNA() {
+		for (int i = 0; i < dna.length; i++) {
+			dna[i] = new Cromossomo();
+		}
+	}
+
+	public double[] evaluate() {
+		double[] parcial = new double[dna.length];
+		for (int i = 0; i < parcial.length; i++) {
+			parcial[i] = (double) dna[i].isEqual(target);
+			if (parcial[i] == 0)
+				System.out.println("Encontrou");
+		}
+		/*
+		 * for (double d : parcial) { System.out.print(d + " "); System.out.println(); }
+		 */
+		return parcial;
+	}
+
+	public void selection() {
+
+		double[] fitness = evaluate();
+		int[] fitnessInt = new int[fitness.length];
+		for (int i = 0; i < fitnessInt.length; i++) {
+			fitnessInt[i] = (int) fitness[i];
+		}
+
+		int tamNewGen = 0;
+		for (int i = 0; i < fitness.length; i++) {
+			tamNewGen += fitnessInt[i];
+		}
+		System.out.println(tamNewGen);
+		Cromossomo[] dnaNextGen = new Cromossomo[tamNewGen];
+		
+		int ateagora = 0;
+		for (int i = 0; i < fitness.length; i++) {
+			for (int j = ateagora; j < (ateagora + fitnessInt[i]); j++) {
+				dnaNextGen[j] = new Cromossomo(dna[i]);
+			}
+			ateagora += fitnessInt[i];
+		}
+		int mutacao = (int) (tamanho*(getIndiceMutacao()/100.0));
+		for (int i = 0; i < (tamanho-mutacao); i++) {
+			dna[i] = dnaNextGen[gerador.nextInt(tamNewGen)];
+		}
+		Cromossomo mutante = new Cromossomo();
+		for (int i = (tamanho-mutacao); i < dna.length; i++) {
+			dna[i] = mutante.crossover(dnaNextGen[gerador.nextInt((int) tamNewGen)],
+					dnaNextGen[gerador.nextInt((int) tamNewGen)]);
+		}
+		System.out.println(mutacao+" Genes mutantes");
+
+		geracao++;
+
+	}
+
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+
+		for (int i = 0; i < dna.length; i++) {
+			result = result.append("Cromossomo " + (i + 1) + ": " + dna[i].toString() + "\n");
+		}
+		return result.toString();
+	}
+
+	public double getIndiceMutacao() {
+		return indiceMutacao;
+	}
+
+	public void setIndiceMutacao(double indiceMutacao) {
+		this.indiceMutacao = indiceMutacao;
+	}
+}
