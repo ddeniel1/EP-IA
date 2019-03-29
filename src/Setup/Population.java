@@ -1,6 +1,9 @@
 package Setup;
 
+import java.io.IOException;
 import java.util.Random;
+
+import Draw.Escritor;
 
 public class Population {
 	private double indiceMutacao = 0;
@@ -35,10 +38,9 @@ public class Population {
 				System.out.println("Encontrou");
 		}
 
-		/*for (double d : parcial) {
-			System.out.print(d + " ");
-			System.out.println();
-		}*/
+		/*
+		 * for (double d : parcial) { System.out.print(d + " "); System.out.println(); }
+		 */
 
 		return parcial;
 	}
@@ -63,7 +65,7 @@ public class Population {
 		return arr;
 	}
 
-	public void selection() {
+	public void selection(Escritor escravao) {
 
 		double[] fitness = evaluate();
 		int[] fitnessInt = new int[fitness.length];
@@ -71,25 +73,29 @@ public class Population {
 			fitnessInt[i] = (int) fitness[i];
 		}
 		fitnessInt = bubbleSort(fitnessInt);
-		
-		
 
 		int tamNewGen = 0;
 		for (int i = 0; i < fitness.length; i++) {
 			tamNewGen += fitnessInt[i];
 		}
-		System.out.println(tamNewGen);
+		try {
+			escravao.escritor.append(geracao+","+ (tamNewGen / fitnessInt.length)+","+fitnessInt[0]+"\n");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(geracao+" "+ (tamNewGen / fitnessInt.length)+" "+fitnessInt[0]);
 		Cromossomo[] dnaNextGen = new Cromossomo[tamNewGen];
 
 		int ateagora = 0;
 		for (int i = 0; i < fitnessInt.length; i++) {
-			for (int j = ateagora; j < (ateagora + fitnessInt[fitnessInt.length-1-i]); j++) {
+			for (int j = ateagora; j < (ateagora + fitnessInt[fitnessInt.length - 1 - i]); j++) {
 				dnaNextGen[j] = new Cromossomo(dna[i]);
 			}
-			
-			ateagora += fitnessInt[fitnessInt.length-i-1];
+
+			ateagora += fitnessInt[fitnessInt.length - i - 1];
 		}
-		int mutacao = gerador.nextInt((int)(tamanho * (getIndiceMutacao() / 100.0)));
+		int mutacao = (int) ((tamanho * (getIndiceMutacao() / 100.0)));
 		for (int i = 0; i < (tamanho - mutacao); i++) {
 			dna[i] = dnaNextGen[gerador.nextInt(tamNewGen)];
 		}
@@ -98,7 +104,6 @@ public class Population {
 			dna[i] = mutante.crossover(dnaNextGen[gerador.nextInt((int) tamNewGen)],
 					dnaNextGen[gerador.nextInt((int) tamNewGen)]);
 		}
-		System.out.println(mutacao + " Genes mutantes");
 
 		geracao++;
 
