@@ -21,7 +21,7 @@ public class Cromossomo {
 	private void initCromossomo() {
 		
 		for (int i = 0; i < genes.length; i++) {
-			genes[i] = new Gene(gerador.nextInt(11));
+			genes[i] = new Gene(gerador.nextInt(10)+1);
 		}
 	}
 

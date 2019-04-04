@@ -21,7 +21,7 @@ public class Main {
 		for (int i = 0; i < 10; i++) {
 			p = new Population(pop);
 			p.setIndiceMutacao(mut);
-			escravao = new Escritor(pop, p.getIndiceMutacao(), geracoes, i+1);
+			escravao = new Escritor(pop, p.getIndiceMutacao(), geracoes, i + 1);
 			for (int j = 0; j < geracoes; j++) {
 				p.selection(escravao);
 				p.evaluate();

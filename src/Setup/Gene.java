@@ -1,19 +1,24 @@
 package Setup;
 
 public class Gene {
-	private int num;
+	private boolean[] num = new boolean[10];
 
 	public Gene(int num) {
+		
 		this.setNum(num);
 
 	}
 
 	public int getNum() {
-		return num;
+		for (int i = 0; i < num.length; i++) {
+			if (num[i]) return i+1;
+		}
+		return -1;
 	}
 
 	public void setNum(int num) {
-		this.num = num;
+		this.num = new boolean[10];
+		this.num[num-1] = true;
 	}
 
 }

@@ -32,7 +32,6 @@ public class Escritor {
 	public void escrever(int geracao, int i, int j) {
 
 		try {
-			System.out.println("Escreveu");
 			escritor.append(geracao + "," + i + "," + j + "\n");
 		} catch (IOException e) {
 			e.printStackTrace();

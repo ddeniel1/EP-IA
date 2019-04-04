@@ -1,0 +1,10 @@
+library(readr)
+log_1 <- x1
+
+plot(log_1$ger,log_1$avgFit,xlab = "", ylab = "", type = "n", xlim = c(0,max(x)), ylim = c(0, 140), axes = FALSE)
+axis(1)
+axis(2)
+lines(log_1$ger, log_1$avgFit, lwd = 2, col="blue")
+mtext("Gerações", side = 1, line = 2.5, cex = 1.5)
+mtext("AvgFit", side = 2, line = 2.4, cex = 1.5, las = 0)
+legend("bottomleft", legend=c("RegiÃ£o CrÃ�tica","PreferÃªncia de Leitores","PreferÃªncia de Escritores"), lty=1, col=c("blue","red","darkgreen"), lwd=2, bty="n")
