@@ -28,6 +28,7 @@ public class Main {
 			}
 			escravao.encerra();
 		}
+		
 
 		scan.close();
 		System.out.println(p.toString());
