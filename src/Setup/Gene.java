@@ -28,9 +28,11 @@ public class Gene {
 
 		char[] numBin1 = { '0', '0', '0', '0', '0', '0', '0', '0', '0', '0' };
 
-		for (int i = 0, j = numBin.length - 1, k = numString.length() - 1; i < numString.length(); i++) {
+		for (int j = numBin.length - 1, k = numString.length() - 1; k >=0;j--,k--) {
 			numBin1[j] = numString.charAt(k);
 		}
+		
+		
 		numBin = numBin1;
 	}
 

@@ -34,13 +34,14 @@ public class Population {
 	public double[] evaluate() {
 		double[] parcial = new double[dna.length];
 		for (int i = 0; i < parcial.length; i++) {
-			parcial[i] = Math.abs(dna[i].isEqual());
+			parcial[i] = dna[i].isEqual();
 			if (parcial[i] == target)
 				System.out.println("Encontrou");
 		}
 
 		/*
-		 * for (double d : parcial) { System.out.print(d + " "); System.out.println(); }
+		 * for (double d : parcial) { System.out.print(d + " ");
+		 * System.out.println(); }
 		 */
 
 		return parcial;
@@ -69,7 +70,6 @@ public class Population {
 	public void selection(Escritor escravao) {
 
 		double[] fitness = evaluate();
-		
 
 		fitness = bubbleSort(fitness);
 
@@ -77,78 +77,83 @@ public class Population {
 		int contador = 0;
 		for (int i = 0; i < fitness.length; i++) {
 			tamNewGen += fitness[i];
-			contador+=i+1;
+			contador += i + 1;
 		}
 		try {
-			escravao.escritor.append(geracao+","+ (tamNewGen / fitness.length)+","+fitness[0]+"\n");
+			escravao.escritor.append(geracao + "," + (tamNewGen / fitness.length) + "," + fitness[0] + "\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if(debug)System.out.println(geracao+" "+ (tamNewGen / fitness.length)+" "+fitness[0]);
+		if (debug)
+			System.out.println(geracao + " " + (tamNewGen / fitness.length) + " " + fitness[0]);
 
 		Cromossomo[] newGen = new Cromossomo[contador];
 
 		int ateagora = 0;
-		
+
 		for (int i = 0; i < dna.length; i++) {
 			int k = 0;
-			for (int j =(ateagora==-1?0:ateagora); j < (ateagora + dna.length-i); j++) {
+			for (int j = (ateagora == -1 ? 0 : ateagora); j < (ateagora + dna.length - i); j++) {
 				newGen[j] = new Cromossomo(dna[i]);
 				k++;
-			}	
-			ateagora+=k;
-			
+			}
+			ateagora += k;
+
 		}
-		
-		//CrossOver (para todos os individuos?)
+
+		// CrossOver (para todos os individuos?)
 		for (int i = 0; i < dna.length; i++) {
 			Cromossomo pai = newGen[gerador.nextInt(contador)];
 			Cromossomo mae = newGen[gerador.nextInt(contador)];
-			
-			
-			int ponto = gerador.nextInt(10);
-			String filhoStringX = (ponto == 0 ? "" : pai.getGenes(0).getNum().substring(0, ponto));
-			filhoStringX = filhoStringX + (ponto==9?mae.getGenes(0).getNum().charAt(9):mae.getGenes(0).getNum().substring(ponto));
-			
-			String filhoStringY = (ponto == 0 ? "" : pai.getGenes(1).getNum().substring(0, ponto));
-			filhoStringY = filhoStringY + (ponto==9?mae.getGenes(1).getNum().charAt(9):mae.getGenes(1).getNum().substring(ponto));
-			
-			dna[i] = mutacao(new Cromossomo(filhoStringX, filhoStringY));
+			//System.out.println(mae.toString() + "  " + pai.toString());
+
+			if (gerador.nextDouble() <= 0.8) {
+				int ponto = gerador.nextInt(10);
+				String filhoStringX = (ponto == 0 ? "" : pai.getGenes(0).getNum().substring(0, ponto));
+				filhoStringX = filhoStringX
+						+ (ponto == 9 ? mae.getGenes(0).getNum().charAt(9) : mae.getGenes(0).getNum().substring(ponto));
+
+				String filhoStringY = (ponto == 0 ? "" : pai.getGenes(1).getNum().substring(0, ponto));
+				filhoStringY = filhoStringY
+						+ (ponto == 9 ? mae.getGenes(1).getNum().charAt(9) : mae.getGenes(1).getNum().substring(ponto));
+
+				dna[i] = mutacao(new Cromossomo(filhoStringX, filhoStringY));
+			} else
+				dna[i] = newGen[gerador.nextInt(contador)];
 		}
-		
+
 		geracao++;
 
 	}
 
-	
-
 	private Cromossomo mutacao(Cromossomo crossover) {
-		
-		if(gerador.nextDouble()<= (getIndiceMutacao()/100.0)){
-			int mutacoes = gerador.nextInt(10)+1;
+
+		if (gerador.nextDouble() <= (getIndiceMutacao() / 100.0)) {
+			int mutacoes = gerador.nextInt(10) + 1;
 			int ponto = 0;
 			String x = crossover.getGenes(0).getNum();
-			String xNovo=""+x;
-			if(debug)System.out.println(x+" "+xNovo+" X ");
-			
+			String xNovo = "" + x;
+			//System.out.println(x + " " + xNovo + " X ");
+
 			for (int i = 0; i < mutacoes; i++) {
 				ponto = gerador.nextInt(10);
-				xNovo = (ponto==0?"":xNovo.substring(0,ponto))+(xNovo.charAt(ponto)== '1'? "0": "1")+(ponto==9?"":xNovo.substring(ponto+1));
+				xNovo = (ponto == 0 ? "" : xNovo.substring(0, ponto)) + (xNovo.charAt(ponto) == '1' ? "0" : "1")
+						+ (ponto == 9 ? "" : xNovo.substring(ponto + 1));
 			}
 			String y = crossover.getGenes(1).getNum();
-			String yNovo = ""+y;
-			if(debug)System.out.println(y+" "+yNovo+" Y ");
-			
-			
-			mutacoes = gerador.nextInt(10)+1;
+			String yNovo = "" + y;
+			//System.out.println(y + " " + yNovo + " Y ");
+
+			mutacoes = gerador.nextInt(10) + 1;
 			for (int i = 0; i < mutacoes; i++) {
 				ponto = gerador.nextInt(10);
-				yNovo = (ponto==0?"":yNovo.substring(0,ponto))+(yNovo.charAt(ponto)== '1'? "0": "1")+(ponto==9?"":yNovo.substring(ponto+1));
+				yNovo = (ponto == 0 ? "" : yNovo.substring(0, ponto)) + (yNovo.charAt(ponto) == '1' ? "0" : "1")
+						+ (ponto == 9 ? "" : yNovo.substring(ponto + 1));
 			}
-			crossover = new Cromossomo(xNovo,yNovo);
+			crossover = new Cromossomo(xNovo, yNovo);
 
 		}
-		
+
 		return crossover;
 	}
 

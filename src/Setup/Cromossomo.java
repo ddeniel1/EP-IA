@@ -43,12 +43,11 @@ public class Cromossomo {
 	}
 
 	public double isEqual() {
-		double x = Integer.parseInt(genes[0].getNum(), 2);
-		double y = Integer.parseInt(genes[1].getNum(), 2);
-		double contaCabulosa = 20 + Math.pow(x, 2)
-				+ (Math.pow(y, 2))
-				- 10 * (Math.cos(2 * Math.PI * x)
-				+ (Math.cos(2 * Math.PI * y)));
+		double x = -5.0+Integer.parseInt(genes[0].getNum(), 2)*0.00978;
+		double y = -5.0+Integer.parseInt(genes[1].getNum(), 2)*0.00978;
+		double contaCabulosa = 20.0 + (x*x)+ (y*y)
+				- 10.0 * (Math.cos(2.0 * Math.PI * x)
+				+ Math.cos(2.0 * Math.PI * y));
 		return contaCabulosa;
 	}
 

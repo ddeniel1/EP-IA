@@ -18,10 +18,10 @@ public class Escritor {
 	public Escritor(int populacao, double mutacao, int geracoes, int exec) throws IOException {
 		maxGer = geracoes;
 
-		String resumu = "G:/Meu Drive/Matérias 5º Semestre/IA/EP/res/" + populacao + "_pop_" + (int) mutacao + "_mut_"
+		String resumu = "res/" + populacao + "_pop_" + (int) (mutacao*10000) + "_mut_"
 				+ geracoes + "_ger" + "/" + exec + ".csv";
 		try {
-			new File("G:/Meu Drive/Matérias 5º Semestre/IA/EP/res/" + populacao + "_pop_" + (int) mutacao + "_mut_"
+			new File("res/" + populacao + "_pop_" + (int) (mutacao*10000) + "_mut_"
 					+ geracoes + "_ger" + "/").mkdir();
 			resumo = new File(resumu);
 			escritor = new FileWriter(resumu);
