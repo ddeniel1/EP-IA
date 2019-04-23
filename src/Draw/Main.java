@@ -28,10 +28,15 @@ public class Main {
 			}
 			escravao.encerra();
 		}
+		escravao = new Escritor(pop, p.getIndiceMutacao(), geracoes, 0);
+		escravao.resumo();
+		
+		
 		
 
 		scan.close();
-		System.out.println(p.toString());
+		System.out.println("FIM");
 	}
+
 
 }
