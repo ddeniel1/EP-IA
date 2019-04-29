@@ -11,13 +11,14 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		int MAX_POP_INICIAL = 1000;
 		double MAX_MUTACAO = 2;
+		double[] muts = {100, 10, 1, 0.1, 0.01, 0.001, 20, 2, 0.2, 0.02, 0.002};
 		
-		for (int k = 0; k < 1; k++) {
+		for (int k = 0; k < muts.length; k++) {
 			
 			Scanner scan = new Scanner(System.in);
-			int pop = (int)Math.pow(10, k);
+			int pop = 100;
 			Population p = new Population(pop);
-			double mut = 100;
+			double mut = muts[k];
 			p.setIndiceMutacao(mut);
 			int geracoes = 20;
 			Escritor escravao;
